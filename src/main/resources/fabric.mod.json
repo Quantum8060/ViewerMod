@@ -5,13 +5,13 @@
 	"name": "Viewer Mod",
 	"description": "Opt-in local archive of chunks received while connected to a server.",
 	"authors": [
-		"qmc"
+		"Quantum8060"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/Quantum8060/ViewerMod"
 	},
-	"license": "CC0-1.0",
+	"license": "MIT",
 	"icon": "assets/viewer-mod/icon.png",
 	"environment": "*",
 	"entrypoints": {
