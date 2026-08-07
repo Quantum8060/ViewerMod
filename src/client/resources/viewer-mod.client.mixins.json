@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "xyz.qmc.client.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"WorldChunkMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}
