@@ -9,11 +9,13 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
+import xyz.qmc.qolib.api.client.config.ConfigScreenRegistry;
 
 public final class ViewerModClient implements ClientModInitializer {
 	private static final KeyBinding TOGGLE = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.viewer-mod.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_V, KeyBinding.Category.create(Identifier.of("viewer-mod", "general"))));
 	@Override public void onInitializeClient() {
 		ViewerConfig.load();
+		ConfigScreenRegistry.register("viewer-mod", "Viewer Mod", ViewerConfig::createScreen);
 		ClientChunkEvents.CHUNK_LOAD.register(SnapshotRecorder::capture);
 		ClientChunkEvents.CHUNK_UNLOAD.register(SnapshotRecorder::capture);
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {

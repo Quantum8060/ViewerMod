@@ -1,48 +1,36 @@
 package xyz.qmc.client;
 
-import net.fabricmc.loader.api.FabricLoader;
-import xyz.qmc.ViewerMod;
+import net.minecraft.client.gui.screen.Screen;
+import xyz.qmc.qolib.api.client.config.ClientConfig;
+import xyz.qmc.qolib.api.client.config.ConfigValue;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-/** Small dependency-free config.  It is deliberately opt-in. */
+/** Client settings stored by QoLib in config/viewer-mod.json. */
 final class ViewerConfig {
-	private static final Path FILE = FabricLoader.getInstance().getConfigDir().resolve("viewer-mod.json");
-	private static final Pattern ENABLED = Pattern.compile("\\\"enabled\\\"\\s*:\\s*(true|false)");
-	private static boolean enabled;
+	private static final ConfigValue<Boolean> ENABLED = ConfigValue.booleanValue("enabled", false);
+	private static final ClientConfig CONFIG = ClientConfig.builder("viewer-mod")
+		.add(ENABLED)
+		.build();
+
+	private ViewerConfig() {
+	}
 
 	static void load() {
-		enabled = false;
-		try {
-			if (Files.exists(FILE)) {
-				Matcher match = ENABLED.matcher(Files.readString(FILE, StandardCharsets.UTF_8));
-				if (match.find()) enabled = Boolean.parseBoolean(match.group(1));
-			} else {
-				save();
-			}
-		} catch (IOException exception) {
-			ViewerMod.LOGGER.warn("Could not read viewer-mod configuration", exception);
-		}
+		CONFIG.load();
 	}
 
-	static boolean enabled() { return enabled; }
+	static boolean enabled() {
+		return ENABLED.get();
+	}
 
 	static void toggle() {
-		enabled = !enabled;
-		save();
+		ENABLED.set(!ENABLED.get());
+		CONFIG.save();
 	}
 
-	private static void save() {
-		try {
-			Files.createDirectories(FILE.getParent());
-			Files.writeString(FILE, "{\n  \"enabled\": " + enabled + "\n}\n", StandardCharsets.UTF_8);
-		} catch (IOException exception) {
-			ViewerMod.LOGGER.warn("Could not save viewer-mod configuration", exception);
-		}
+	static Screen createScreen(Screen parent) {
+		return CONFIG.screen("Viewer Mod")
+			.category("general", "General", menu -> menu
+				.toggle("Native world saving", "Store received chunks in a local archive.", ENABLED))
+			.build(parent);
 	}
 }

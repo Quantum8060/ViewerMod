@@ -8,7 +8,7 @@
 		"Quantum8060"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
+		"homepage": "https://github.com/Quantum8060/ViewerMod",
 		"sources": "https://github.com/Quantum8060/ViewerMod"
 	},
 	"license": "MIT",
@@ -20,6 +20,9 @@
 		],
 		"client": [
 			"xyz.qmc.client.ViewerModClient"
+		],
+		"modmenu": [
+			"xyz.qmc.client.ViewerModMenu"
 		]
 	},
 	"mixins": [
@@ -32,6 +35,10 @@
 		"fabricloader": ">=0.19.3",
 		"minecraft": "~1.21.11",
 		"java": ">=21",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"qolib": ">=1.0.0"
+	},
+	"suggests": {
+		"modmenu": "*"
 	}
 }
